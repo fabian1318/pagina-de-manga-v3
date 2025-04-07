@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manwhas - Mi Biblioteca</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            margin: 0;
+            padding: 20px;
+            color: #fff;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: #d10000;
+            font-size: 2.5em;
+        }
+        nav {
+            background-color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        nav a:hover {
+            color: #d10000;
+            transition: 0.3s;
+        }
+        .library {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+        .item {
+            background: #2a2a2a;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        .item:hover {
+            transform: scale(1.05);
+        }
+        .item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 3px solid #d10000;
+        }
+        .item-info {
+            padding: 15px;
+            text-align: center;
+        }
+        .item-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        .item-type {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Manwhas</h1>
+    </header>
+    
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="comics.html">Cómics</a>
+        <a href="mangas.html">Mangas</a>
+        <a href="manwhas.html">Manwhas</a>
+    </nav>
+
+    <div class="library">
+        <!-- Solo Leveling -->
+        <a href="manwhas/SoloLeveling.html" class="item">
+            <img src="images/Solo Leveling.png" alt="Solo Leveling">
+            <div class="item-info">
+                <div class="item-title">Solo Leveling</div>
+                <div class="item-type">Manwha</div>
+            </div>
+        </a>
+        
+        <!-- Puedes añadir más manwhas aquí -->
+    </div>
+</body>
+</html>
