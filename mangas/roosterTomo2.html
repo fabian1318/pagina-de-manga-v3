@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Rooster Fighter - Lector</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 10px;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        #controls {
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: sticky;
+            top: 0;
+            background-color: rgba(0,0,0,0.8);
+            padding: 10px 0;
+            z-index: 100;
+        }
+        .nav-btn {
+            padding: 8px 15px;
+            background-color: #ff5500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 0 5px;
+        }
+        .nav-btn:hover {
+            background-color: #ff3300;
+        }
+        .nav-btn:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+        #chapter-selector {
+            padding: 8px;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+        }
+        #manga-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 650px;
+        }
+        .manga-page {
+            width: auto;
+            max-width: 100%;
+            max-height: 200vh;
+            margin: 4px 0;
+            object-fit: contain;
+        }
+        .chapter-separator {
+            width: 100%;
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px 0;
+            background-color: #222;
+            border-radius: 5px;
+        }
+        .chapter-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .chapter {
+            display: none;
+            width: 100%;
+        }
+        .chapter-title {
+            color: white;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <button id="prev-chapter-btn" class="nav-btn" disabled>Capítulo Anterior</button>
+        <select id="chapter-selector"></select>
+        <button id="next-chapter-btn" class="nav-btn">Siguiente Capítulo</button>
+    </div>
+
+    <div id="manga-container">
+        <!-- Capítulos se generarán automáticamente con JavaScript -->
+    </div>
+
+    <script>
+        // Configuración de los capítulos
+        const chapters = [
+            {
+                id: 'chapter6',
+                title: 'Capítulo 6',
+                folder: 'Rooster Fighter - Tomo 02/06/',
+                pages: generatePageNumbers(1, 50)
+            },
+            {
+                id: 'chapter7',
+                title: 'Capítulo 7',
+                folder: 'Rooster Fighter - Tomo 02/07/',
+                pages: generatePageNumbers(1, 41)
+            },
+            {
+                id: 'chapter8',
+                title: 'Capítulo 8',
+                folder: 'Rooster Fighter - Tomo 02/08/',
+                pages: generatePageNumbers(1, 22)
+            },
+            {
+                id: 'chapter9',
+                title: 'Capítulo 9',
+                folder: 'Rooster Fighter - Tomo 02/09/',
+                pages: generatePageNumbers(1, 35)
+            },
+            {
+                id: 'chapter10',
+                title: 'Capítulo 10',
+                folder: 'Rooster Fighter - Tomo 02/10/',
+                pages: generatePageNumbers(1, 41)
+            }
+        ];
+
+        // Función para generar números de página con formato 001, 002, etc.
+        function generatePageNumbers(start, end) {
+            return Array.from({length: end}, (_, i) => `${(i + start).toString().padStart(3, '0')}.jpg`);
+        }
+
+        // Función para generar el HTML de un capítulo
+        function generateChapterHTML(chapter, index) {
+            let html = `
+                <div class="chapter" id="${chapter.id}">
+                    <div class="chapter-title">${chapter.title}</div>
+                    <div class="chapter-controls">
+                        <button class="nav-btn prev-btn" ${index === 0 ? 'disabled' : ''} onclick="navigateChapter(${index - 1})">
+                            Capítulo Anterior
+                        </button>
+                        <button class="nav-btn next-btn" ${index === chapters.length - 1 ? 'disabled' : ''} onclick="navigateChapter(${index + 1})">
+                            Siguiente Capítulo
+                        </button>
+                    </div>
+            `;
+
+            // Añadir todas las páginas
+            chapter.pages.forEach(page => {
+                html += `<img src="${chapter.folder}${page}" class="manga-page">`;
+            });
+
+            // Añadir controles al final
+            html += `
+                <div class="chapter-controls">
+                    <button class="nav-btn prev-btn" ${index === 0 ? 'disabled' : ''} onclick="navigateChapter(${index - 1})">
+                        Capítulo Anterior
+                    </button>
+                    <button class="nav-btn next-btn" ${index === chapters.length - 1 ? 'disabled' : ''} onclick="navigateChapter(${index + 1})">
+                        Siguiente Capítulo
+                    </button>
+                </div>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        // Función para navegar entre capítulos
+        function navigateChapter(index) {
+            if (index >= 0 && index < chapters.length) {
+                showChapter(chapters[index].id);
+                // Actualizar selector
+                document.getElementById('chapter-selector').value = index;
+                // Actualizar botones de navegación superiores
+                updateNavButtons(index);
+            }
+        }
+
+        // Función para mostrar un capítulo específico
+        function showChapter(chapterId) {
+            // Oculta todos los capítulos
+            document.querySelectorAll('.chapter').forEach(chapter => {
+                chapter.style.display = 'none';
+            });
+            
+            // Muestra el capítulo seleccionado
+            document.getElementById(chapterId).style.display = 'block';
+            
+            // Desplázate al principio del capítulo
+            window.scrollTo(0, 0);
+        }
+
+        // Función para actualizar los botones de navegación superiores
+        function updateNavButtons(currentIndex) {
+            const prevBtn = document.getElementById('prev-chapter-btn');
+            const nextBtn = document.getElementById('next-chapter-btn');
+            
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === chapters.length - 1;
+            
+            // Actualizar eventos
+            prevBtn.onclick = () => navigateChapter(currentIndex - 1);
+            nextBtn.onclick = () => navigateChapter(currentIndex + 1);
+        }
+
+        // Generar todos los capítulos cuando se carga la página
+        window.onload = function() {
+            const container = document.getElementById('manga-container');
+            const selector = document.getElementById('chapter-selector');
+            
+            // Llenar el selector de capítulos
+            chapters.forEach((chapter, index) => {
+                container.innerHTML += generateChapterHTML(chapter, index);
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = chapter.title;
+                selector.appendChild(option);
+            });
+            
+            // Configurar evento para el selector
+            selector.addEventListener('change', function() {
+                navigateChapter(parseInt(this.value));
+            });
+            
+            // Mostrar el primer capítulo
+            if (chapters.length > 0) {
+                showChapter(chapters[0].id);
+                updateNavButtons(0);
+            }
+        };
+    </script>
+</body>
+</html>
