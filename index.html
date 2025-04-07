@@ -24,7 +24,10 @@
             background-color: #333;
             padding: 15px;
             border-radius: 8px;
-            margin-bottom: 30px;
+            margin: 0 auto 30px; /* Centrado horizontal */
+            display: flex;
+            justify-content: center; /* Centra los enlaces */
+            max-width: fit-content; /* Ancho según contenido */
         }
         nav a {
             color: #fff;
@@ -72,13 +75,34 @@
             color: #aaa;
             font-size: 0.9em;
         }
+        .banner-container {
+            width: 100vw; 
+            margin-left: calc(-50vw + 50%); 
+            overflow: hidden;
+            background: #000;
+            text-align: center;
+            height: 200px;
+            position: relative;
+            left: 0;
+            right: 0;
+        }
+
+        .banner {
+            width: 60%; 
+            height: 100%;
+            object-fit: cover; 
+            object-position: center;
+            min-width: 60vw; 
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Manga no Kaizoku</h1>
+        <h1>Bienvenidos a Manga no Kaizoku</h1>
     </header>
-    
+    <div class="banner-container">
+        <img src="images/banner.jpg" alt="Manga no Kaizoku - UNELEMENTERS.PRG DONATELL" class="banner">
+    </div>
     <nav>
         <a href="index.html">Inicio</a>
         <a href="comics.html">Cómics</a>
@@ -129,7 +153,7 @@
                 cover: "images/Whatchmen.jpg", 
                 reader: "comics/watchmen.html" 
             }
-            // Puedes añadir más elementos aquí
+            
         ];
 
         const libraryContainer = document.getElementById('library-container');
